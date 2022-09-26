@@ -20,46 +20,61 @@ const Task: NextPage = () => {
 	const columns = [
 		{
 			name: "Id",
-            selector: row => row.id,
+			selector: (row) => row.id,
 			sortable: true,
 			sortField: "id",
 		},
 		{
 			name: "Name",
-            selector: row => row.name,
+			selector: (row) => row.name,
 			sortable: true,
 			sortField: "name",
 		},
 		{
 			name: "Description",
-            selector: row => row.description,
+			selector: (row) => row.description,
 			sortable: true,
 			sortField: "description",
 		},
 		{
 			name: "Status",
-            selector: row => row.status,
+			selector: (row) => row.status,
 			sortable: true,
 			sortField: "dueDate", // status is generated based on dueDate
 		},
 		{
 			name: "Due Date",
-            selector: row => row.dueDate,
+			selector: (row) => row.dueDate,
 			sortable: true,
 			sortField: "dueDate",
 		},
 		{
 			name: "Created At",
-            selector: row => row.createdAt,
-            sortable: true,
-            sortField: "createdAt"
+			selector: (row) => row.createdAt,
+			sortable: true,
+			sortField: "createdAt",
 		},
-        {
-            name: "Actions",
-            sortable: false,
-        },
+		{
+			name: "Actions",
+			sortable: false,
+			cell: (task: Task) => (
+				<Flex>
+					<Button w="100px" onClick={() => openTaskModal(task)}>
+						Edit
+					</Button>
+					<Button
+						onClick={() => {
+							deleteTask(task.id);
+						}}
+					>
+						Delete
+					</Button>
+				</Flex>
+			),
+		},
 	] as TableColumn<Task>[];
 	const addTask = (task: Task) => {
+        setLoading(true);
 		fetch(BASE_URL + "tasks", {
 			method: "POST",
 			mode: "cors",
@@ -73,15 +88,21 @@ const Task: NextPage = () => {
 				if (resp.success) {
 					fetchTasks();
 					setOpenEditTaskModal(false);
+                    toast({
+                        description: "Added!",
+                        status: "success",
+                    })
 				} else {
 					toast({
 						description: resp.error.description,
 						status: "error",
 					});
 				}
+                setLoading(false);
 			});
 	};
 	const updateTask = (task: Task) => {
+        setLoading(true);
 		fetch(BASE_URL + "tasks/" + task.id, {
 			method: "PATCH",
 			mode: "cors",
@@ -93,23 +114,23 @@ const Task: NextPage = () => {
 			.then((res) => res.json())
 			.then((resp) => {
 				if (resp.success) {
-					const updatedTask = resp.data as Task;
-					for (const i in taskList) {
-						if (taskList[i].id == updatedTask.id) {
-							taskList[i] = updatedTask;
-						}
-					}
-					setTaskList(taskList);
+                    fetchTasks();
 					setOpenEditTaskModal(false);
+                    toast({
+                        description: "Updated!",
+                        status: "success",
+                    })
 				} else {
 					toast({
 						description: resp.error.description,
 						status: "error",
 					});
 				}
+                setLoading(false);
 			});
 	};
 	const deleteTask = (id: number) => {
+        setLoading(true);
 		fetch(BASE_URL + "tasks/" + id, {
 			method: "DELETE",
 			mode: "cors",
@@ -123,17 +144,19 @@ const Task: NextPage = () => {
 			.then((res) => res.json())
 			.then((resp) => {
 				if (resp.success) {
-					const filteredTaskList = taskList.filter((el) => {
-						return el.id != id;
-					}) as Task[];
-					setTaskList(filteredTaskList);
+					fetchTasks();
 					setOpenEditTaskModal(false);
+                    toast({
+                        description: "Deleted!",
+                        status: "success",
+                    })
 				} else {
 					toast({
 						description: resp.error.description,
 						status: "error",
 					});
 				}
+                setLoading(false);
 			});
 	};
 

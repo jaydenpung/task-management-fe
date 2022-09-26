@@ -4,7 +4,6 @@ import { Input } from "@chakra-ui/input"
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/modal"
 import { useEffect, useState } from "react"
 import { Task } from "../../../types/task.type"
-import DatePicker from 'react-datepicker'
 
 const EditTask: React.FC<{
     isOpen: boolean,
