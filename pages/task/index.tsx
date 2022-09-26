@@ -30,6 +30,12 @@ const Task: NextPage = () => {
 			sortField: "name",
 		},
 		{
+			name: "Description",
+			selector: "description",
+			sortable: true,
+			sortField: "description",
+		},
+		{
 			name: "Status",
 			selector: "status",
 			sortable: true,
