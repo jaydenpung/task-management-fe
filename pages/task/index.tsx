@@ -6,6 +6,7 @@ import { Task } from "../../types/task.type";
 import { BASE_URL } from "../../constants";
 import { TableColumn, SortOrder } from "react-data-table-component";
 import DataTable from "react-data-table-component";
+import EditTask from "./components/EditTask";
 
 const Task: NextPage = () => {
 	const [taskList, setTaskList] = useState<Task[]>([]);
@@ -66,7 +67,7 @@ const Task: NextPage = () => {
 			.then((res) => res.json())
 			.then((resp) => {
 				if (resp.success) {
-					setTaskList([...taskList, resp.data]);
+					fetchTasks();
 					setOpenEditTaskModal(false);
 				} else {
 					toast({
@@ -184,14 +185,14 @@ const Task: NextPage = () => {
 		fetchTasks(currentPage, perPage, sortParam);
 	};
 
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            fetchTasks();
-        }
-      };
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(event.target.value);
-    }
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		if (event.key === "Enter") {
+			fetchTasks();
+		}
+	};
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchValue(event.target.value);
+	};
 
 	useEffect(() => {
 		fetchTasks(); // fetch page 1 of users
@@ -207,11 +208,17 @@ const Task: NextPage = () => {
 			<Center>
 				<Text fontSize="3xl">Task List</Text>
 			</Center>
-            <Flex>
-                <Button w='100px' onClick={() => openTaskModal()}>Add Task</Button>
-                <Input placeholder='Search by name' value={searchValue} onChange={handleInputChange}
-        onKeyDown={handleKeyDown}></Input>
-            </Flex>
+			<Flex>
+				<Button w="100px" onClick={() => openTaskModal()}>
+					Add Task
+				</Button>
+				<Input
+					placeholder="Search by name"
+					value={searchValue}
+					onChange={handleInputChange}
+					onKeyDown={handleKeyDown}
+				></Input>
+			</Flex>
 			<DataTable
 				columns={columns}
 				data={taskList}
@@ -225,13 +232,13 @@ const Task: NextPage = () => {
 				onChangePage={handlePageChange}
 			/>
 
-			{/* <EditTask
-        isOpen={openEditTaskModal}
-        onClose={onClose}
-        addTask={addTask}
-        updateTask={updateTask}
-        task={selectedTask}
-      ></EditTask> */}
+			<EditTask
+				isOpen={openEditTaskModal}
+				onClose={onClose}
+				addTask={addTask}
+				updateTask={updateTask}
+				task={selectedTask}
+			></EditTask>
 		</div>
 	);
 };
