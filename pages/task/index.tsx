@@ -1,15 +1,10 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import styles from "./Task.module.scss";
-import {
-	Text,
-	Center,
-	Button,
-	useToast,
-} from "@chakra-ui/react";
+import { Text, Center, Button, useToast } from "@chakra-ui/react";
 import { Task } from "../../types/task.type";
 import { BASE_URL } from "../../constants";
-import { TableColumn } from "react-data-table-component";
+import { TableColumn, SortOrder } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 
 const Task: NextPage = () => {
@@ -26,26 +21,31 @@ const Task: NextPage = () => {
 			name: "Id",
 			selector: "id",
 			sortable: true,
+			sortField: "id",
 		},
 		{
 			name: "Name",
 			selector: "name",
 			sortable: true,
+			sortField: "name",
 		},
 		{
 			name: "Status",
 			selector: "status",
 			sortable: true,
+			sortField: "dueDate", // status is generated based on dueDate
 		},
 		{
 			name: "Due Date",
 			selector: "dueDate",
 			sortable: true,
+			sortField: "dueDate",
 		},
 		{
 			name: "Created At",
 			selector: "createdAt",
 			sortable: true,
+			sortField: "createdAt",
 		},
 	];
 	const addTask = (task: Task) => {
@@ -126,22 +126,30 @@ const Task: NextPage = () => {
 			});
 	};
 
+	const [currentPage, setCurrentPage] = useState(1);
 	const [loading, setLoading] = useState(false);
 	const [totalRows, setTotalRows] = useState(0);
 	const [perPage, setPerPage] = useState(10);
+	const [sort, setSort] = useState("");
 
-	const fetchTasks = async (page: number, newPerPage?: number) => {
+	const fetchTasks = async (
+		newPage?: number,
+		newPerPage?: number,
+		newSort?: string
+	) => {
 		setLoading(true);
-		const url = `${BASE_URL}tasks?page=${page}&limit=${
+		const url = `${BASE_URL}tasks?page=${newPage ?? currentPage}&limit=${
 			newPerPage ?? perPage
-		}`;
+		}&orderBy=${newSort ?? sort}`;
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
 				const taskList = data.data as Task[];
 				setTaskList(taskList);
 				setLoading(false);
+				setCurrentPage(newPage ?? currentPage);
 				setPerPage(newPerPage ?? perPage);
+				setSort(newSort ?? sort);
 			});
 		fetch(`${url}&paginationMeta=true`)
 			.then((res) => res.json())
@@ -159,8 +167,18 @@ const Task: NextPage = () => {
 		fetchTasks(page, newPerPage);
 	};
 
+	const handleSort = async (
+		column: TableColumn<Task>,
+		sortDirection: SortOrder
+	) => {
+		const sortParam = `${sortDirection === "desc" ? "-" : ""}${
+			column.sortField
+		}`;
+		fetchTasks(currentPage, perPage, sortParam);
+	};
+
 	useEffect(() => {
-		fetchTasks(1); // fetch page 1 of users
+		fetchTasks(); // fetch page 1 of users
 	}, []);
 
 	const openTaskModal = (task?: Task) => {
@@ -179,8 +197,10 @@ const Task: NextPage = () => {
 				data={taskList}
 				progressPending={loading}
 				pagination
+				sortServer
 				paginationServer
 				paginationTotalRows={totalRows}
+				onSort={handleSort}
 				onChangeRowsPerPage={handlePerRowsChange}
 				onChangePage={handlePageChange}
 			/>
