@@ -20,41 +20,45 @@ const Task: NextPage = () => {
 	const columns = [
 		{
 			name: "Id",
-			selector: "id",
+            selector: row => row.id,
 			sortable: true,
 			sortField: "id",
 		},
 		{
 			name: "Name",
-			selector: "name",
+            selector: row => row.name,
 			sortable: true,
 			sortField: "name",
 		},
 		{
 			name: "Description",
-			selector: "description",
+            selector: row => row.description,
 			sortable: true,
 			sortField: "description",
 		},
 		{
 			name: "Status",
-			selector: "status",
+            selector: row => row.status,
 			sortable: true,
 			sortField: "dueDate", // status is generated based on dueDate
 		},
 		{
 			name: "Due Date",
-			selector: "dueDate",
+            selector: row => row.dueDate,
 			sortable: true,
 			sortField: "dueDate",
 		},
 		{
 			name: "Created At",
-			selector: "createdAt",
-			sortable: true,
-			sortField: "createdAt",
+            selector: row => row.createdAt,
+            sortable: true,
+            sortField: "createdAt"
 		},
-	];
+        {
+            name: "Actions",
+            sortable: false,
+        },
+	] as TableColumn<Task>[];
 	const addTask = (task: Task) => {
 		fetch(BASE_URL + "tasks", {
 			method: "POST",
