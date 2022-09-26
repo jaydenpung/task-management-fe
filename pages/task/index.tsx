@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import styles from "./Task.module.scss";
-import { Text, Center, Button, useToast } from "@chakra-ui/react";
+import { Text, Center, Button, useToast, Input, Flex } from "@chakra-ui/react";
 import { Task } from "../../types/task.type";
 import { BASE_URL } from "../../constants";
 import { TableColumn, SortOrder } from "react-data-table-component";
@@ -131,6 +131,7 @@ const Task: NextPage = () => {
 	const [totalRows, setTotalRows] = useState(0);
 	const [perPage, setPerPage] = useState(10);
 	const [sort, setSort] = useState("");
+	const [searchValue, setSearchValue] = useState("");
 
 	const fetchTasks = async (
 		newPage?: number,
@@ -140,7 +141,7 @@ const Task: NextPage = () => {
 		setLoading(true);
 		const url = `${BASE_URL}tasks?page=${newPage ?? currentPage}&limit=${
 			newPerPage ?? perPage
-		}&orderBy=${newSort ?? sort}`;
+		}&orderBy=${newSort ?? sort}&name=${searchValue}`;
 		fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
@@ -177,6 +178,15 @@ const Task: NextPage = () => {
 		fetchTasks(currentPage, perPage, sortParam);
 	};
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            fetchTasks();
+        }
+      };
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+    }
+
 	useEffect(() => {
 		fetchTasks(); // fetch page 1 of users
 	}, []);
@@ -191,7 +201,11 @@ const Task: NextPage = () => {
 			<Center>
 				<Text fontSize="3xl">Task List</Text>
 			</Center>
-			<Button onClick={() => openTaskModal()}>Add Task</Button>
+            <Flex>
+                <Button w='100px' onClick={() => openTaskModal()}>Add Task</Button>
+                <Input placeholder='Search by name' value={searchValue} onChange={handleInputChange}
+        onKeyDown={handleKeyDown}></Input>
+            </Flex>
 			<DataTable
 				columns={columns}
 				data={taskList}
