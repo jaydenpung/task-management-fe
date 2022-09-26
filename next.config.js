@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/task',
+        permanent: true,
+      },
+    ]
+  },
   reactStrictMode: true,
   swcMinify: true,
 }
-
-module.exports = nextConfig
