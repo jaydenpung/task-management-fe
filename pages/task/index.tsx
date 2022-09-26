@@ -7,6 +7,7 @@ import { BASE_URL } from "../../constants";
 import { TableColumn, SortOrder } from "react-data-table-component";
 import DataTable from "react-data-table-component";
 import EditTask from "./components/EditTask";
+import dateFormat from "dateformat";
 
 const Task: NextPage = () => {
 	const [taskList, setTaskList] = useState<Task[]>([]);
@@ -44,13 +45,13 @@ const Task: NextPage = () => {
 		},
 		{
 			name: "Due Date",
-			selector: (row) => row.dueDate,
+			selector: (row) => dateFormat(row.dueDate, 'yyyy-mm-dd'),
 			sortable: true,
 			sortField: "dueDate",
 		},
 		{
 			name: "Created At",
-			selector: (row) => row.createdAt,
+			selector: (row) => dateFormat(row.createdAt, 'yyyy-mm-dd'),
 			sortable: true,
 			sortField: "createdAt",
 		},
@@ -180,6 +181,13 @@ const Task: NextPage = () => {
 			.then((res) => res.json())
 			.then((data) => {
 				const taskList = data.data as Task[];
+                if (taskList?.length) {
+                    for (const task of taskList) {
+                        task.dueDate = new Date(task.dueDate);
+                        task.createdAt = new Date(task.createdAt);
+                    }
+                }
+                
 				setTaskList(taskList);
 				setLoading(false);
 				setCurrentPage(newPage ?? currentPage);

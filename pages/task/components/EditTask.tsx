@@ -4,6 +4,7 @@ import { Input } from "@chakra-ui/input"
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/modal"
 import { useEffect, useState } from "react"
 import { Task } from "../../../types/task.type"
+import dateFormat from "dateformat";
 
 const EditTask: React.FC<{
     isOpen: boolean,
@@ -66,7 +67,7 @@ const EditTask: React.FC<{
 
                     <FormControl mt={4}>
                         <FormLabel>Due Date</FormLabel>
-                        <Input value={dueDate} placeholder='Due Date' type="date" onChange={(e) => { setDueDate(e.target.value) }} />
+                        <Input value={dateFormat(dueDate, 'yyyy-mm-dd')} placeholder='Due Date' type="date" onChange={(e) => { setDueDate(new Date(e.target.value)) }} />
                     </FormControl>
                 </ModalBody>
 

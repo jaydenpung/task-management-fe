@@ -1264,6 +1264,11 @@
   dependencies:
     "tslib" "^2.4.0"
 
+"@types/dateformat@^5.0.0":
+  "integrity" "sha512-SZg4JdHIWHQGEokbYGZSDvo5wA4TLYPXaqhigs/wH+REDOejcJzgH+qyY+HtEUtWOZxEUkbhbdYPqQDiEgrXeA=="
+  "resolved" "https://registry.npmjs.org/@types/dateformat/-/dateformat-5.0.0.tgz"
+  "version" "5.0.0"
+
 "@types/json5@^0.0.29":
   "integrity" "sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ=="
   "resolved" "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
@@ -1722,6 +1727,11 @@
   "integrity" "sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA=="
   "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-2.29.3.tgz"
   "version" "2.29.3"
+
+"dateformat@^5.0.3":
+  "integrity" "sha512-Kvr6HmPXUMerlLcLF+Pwq3K7apHpYmGDVqrxcDasBg86UcKeTSNWbEzU8bwdXnxnR44FtMhJAxI4Bov6Y/KUfA=="
+  "resolved" "https://registry.npmjs.org/dateformat/-/dateformat-5.0.3.tgz"
+  "version" "5.0.3"
 
 "debug@^2.6.9":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
