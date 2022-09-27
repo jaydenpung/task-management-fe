@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./Task.module.scss";
 import { Text, Center, Button, useToast, Input, Flex } from "@chakra-ui/react";
 import { Task } from "../../types/task.type";
@@ -168,7 +168,7 @@ const Task: NextPage = () => {
 	const [sort, setSort] = useState("");
 	const [searchValue, setSearchValue] = useState("");
 
-	const fetchTasks = async (
+	const fetchTasks = (
 		newPage?: number,
 		newPerPage?: number,
 		newSort?: string
@@ -206,7 +206,7 @@ const Task: NextPage = () => {
 		fetchTasks(page);
 	};
 
-	const handlePerRowsChange = async (newPerPage: number, page: number) => {
+	const handlePerRowsChange = (newPerPage: number, page: number) => {
 		fetchTasks(page, newPerPage);
 	};
 
@@ -229,9 +229,9 @@ const Task: NextPage = () => {
 		setSearchValue(event.target.value);
 	};
 
-	useEffect(() => {
-		fetchTasks(); // fetch page 1 of users
-	}, []);
+    useCallback(() => {
+		fetchTasks();
+    }, [fetchTasks])
 
 	const openTaskModal = (task?: Task) => {
 		setSelectedTask(task);
