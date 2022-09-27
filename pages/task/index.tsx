@@ -229,9 +229,9 @@ const Task: NextPage = () => {
 		setSearchValue(event.target.value);
 	};
 
-    useCallback(() => {
+    useEffect(() => {
 		fetchTasks();
-    }, [fetchTasks])
+    }, [])
 
 	const openTaskModal = (task?: Task) => {
 		setSelectedTask(task);
