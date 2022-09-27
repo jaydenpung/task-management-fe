@@ -1,5 +1,11 @@
 .container {
     button {
-        margin-right: 0.2rem;
+        margin-right: 1vh;
+        margin-left: 1vh;
+    }
+
+    .addTaskButton {
+        margin-top: 1vh;
+        width: 100%;
     }
 }

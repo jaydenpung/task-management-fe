@@ -51,7 +51,7 @@ const Task: NextPage = () => {
 		},
 		{
 			name: "Created At",
-			selector: (row) => dateFormat(row.createdAt, 'yyyy-mm-dd'),
+			selector: (row) => dateFormat(row.createdAt, 'yyyy-mm-dd hh:MM:ss'),
 			sortable: true,
 			sortField: "createdAt",
 		},
@@ -244,16 +244,19 @@ const Task: NextPage = () => {
 				<Text fontSize="3xl">Task List</Text>
 			</Center>
 			<Flex>
-				<Button w="100px" onClick={() => openTaskModal()}>
-					Add Task
-				</Button>
 				<Input
 					placeholder="Search by name"
 					value={searchValue}
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
 				></Input>
+				<Button w="100px" onClick={() => fetchTasks()}>
+					Search
+				</Button>
 			</Flex>
+            <Button className={styles.addTaskButton} onClick={() => openTaskModal()}>
+                Add Task
+            </Button>
 			<DataTable
 				columns={columns}
 				data={taskList}
