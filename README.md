@@ -1,10 +1,10 @@
 # Task Management API
 
-Web application for Task Management app. Currently hosted at <https://task-management-fe-777.vercel.app/>
+Web application for Task Management app. Currently hosted at <https://task-management-fe-666.vercel.app/>
 
 ## About
 
-This api endpoint is built with next.js framework, connects to api at <https://task-management-api-777.herokuapp.com/>.
+This api endpoint is built with next.js framework, connects to api at <https://task-management-api-666.herokuapp.com/>.
 
 ## Setup
 
